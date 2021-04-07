@@ -1,6 +1,6 @@
 package handler
 
-open class RollDice10Handler : RollDiceHandler(10) {
+class Dice10RollMessageHandler : DiceRollMessageHandler(10) {
 
     override fun diceStickerSet(): List<String> = listOf(
         "CAACAgIAAxkBAAM8YGzVH7TgwUTK_KIoXaYeKfkkTzYAAogOAAJkS2hL4YUyyx8dXM4eBA",  // d10-1

@@ -1,6 +1,6 @@
 package handler
 
-class RollDice8Handler : RollDiceHandler(8) {
+class Dice8RollMessageHandler : DiceRollMessageHandler(8) {
 
     override fun diceStickerSet(): List<String> = listOf(
         "CAACAgIAAxkBAAMbYGzSbBASjs8DuXko2EhrsAZ8_cgAAtUPAAJNrmhL-uti3_1xlMseBA",  // d8-1
