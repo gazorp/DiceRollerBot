@@ -19,6 +19,7 @@ class DiceRoller {
                 Dice10RollMessageHandler(),
                 Dice12RollMessageHandler(),
                 Dice20RollMessageHandler(),
+                Dice100RollMessageHandler(),
             )
 
             val bot = TelegramBot(token, handlers)
