@@ -13,7 +13,6 @@ repositories {
 dependencies {
     implementation("org.slf4j:slf4j-api:1.7.26")
     implementation("ch.qos.logback:logback-classic:1.2.3")
-    implementation("org.ta4j:ta4j-core:0.13")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.3")
 }
