@@ -21,7 +21,7 @@ class TelegramBot(token: String, handlers: List<Handler>) {
 
     private fun loggingHandler(): Handler = object : Handler {
         override fun handle(dispatcher: Dispatcher) = dispatcher.message {
-            logger.info("[${message.chat.username ?: message.chat.title}][${message.from?.firstName}]: ${message.text}")
+            logger.info("[${message.chat.username ?: message.chat.title}][${message.from?.firstName}]: ${message.text} $message")
         }
     }
 

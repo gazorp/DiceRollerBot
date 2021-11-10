@@ -7,7 +7,9 @@ import com.github.kotlintelegrambot.entities.ChatId
 class WrongMessageHandler : Handler {
 
     override fun handle(dispatcher: Dispatcher) = dispatcher.message {
-        bot.sendSticker(ChatId.fromId(update.message?.chat?.id!!), funnyStickers.random(), replyMarkup = null)
+        if (update.message?.text != null) {
+            bot.sendSticker(ChatId.fromId(update.message?.chat?.id!!), funnyStickers.random(), replyMarkup = null)
+        }
         update.consume()
     }
 
