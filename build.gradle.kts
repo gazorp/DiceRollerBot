@@ -19,7 +19,7 @@ dependencies {
 
 tasks.jar {
     manifest {
-        attributes("Main-Class" to "DiceRoller")
+        attributes("Main-Class" to "com.github.diceroller.DiceRoller")
     }
 
     from({
