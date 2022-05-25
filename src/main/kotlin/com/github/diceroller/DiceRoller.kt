@@ -1,5 +1,6 @@
 package com.github.diceroller
 
+import com.github.diceroller.equivocals.InMemoryEquivocalsCardRepository
 import com.github.diceroller.handler.*
 
 class DiceRoller {
@@ -14,6 +15,8 @@ class DiceRoller {
 
             val token = args[1]
 
+            val equivocalsCardsRepo = InMemoryEquivocalsCardRepository()
+
             val handlers = listOf(
                 Dice4RollMessageHandler(),
                 Dice6RollMessageHandler(),
@@ -22,6 +25,7 @@ class DiceRoller {
                 Dice10RollMessageHandler(),
                 Dice12RollMessageHandler(),
                 Dice20RollMessageHandler(),
+                EquivocalsMessageHandler(equivocalsCardsRepo),
                 WrongMessageHandler(),
             )
 
