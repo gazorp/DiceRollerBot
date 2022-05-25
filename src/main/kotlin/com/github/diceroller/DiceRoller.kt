@@ -1,4 +1,6 @@
-import handler.*
+package com.github.diceroller
+
+import com.github.diceroller.handler.*
 
 class DiceRoller {
 

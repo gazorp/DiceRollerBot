@@ -1,6 +1,16 @@
-package handler
+package com.github.diceroller.handler
 
-class Dice10RollMessageHandler : DiceRollMessageHandler(10) {
+import com.github.kotlintelegrambot.dispatcher.handlers.HandleMessage
+import com.github.kotlintelegrambot.entities.ChatId
+
+class Dice100RollMessageHandler : DiceRollMessageHandler(100) {
+
+    override fun handleMessage(): HandleMessage = {
+        // Sending d10 twice will do the trick
+        bot.sendSticker(ChatId.fromId(update.message?.chat?.id!!), diceStickerSet().random(), replyMarkup = null)
+        bot.sendSticker(ChatId.fromId(update.message?.chat?.id!!), diceStickerSet().random(), replyMarkup = null)
+        update.consume()
+    }
 
     override fun diceStickerSet(): List<String> = listOf(
         "CAACAgIAAxkBAAM8YGzVH7TgwUTK_KIoXaYeKfkkTzYAAogOAAJkS2hL4YUyyx8dXM4eBA",  // d10-1

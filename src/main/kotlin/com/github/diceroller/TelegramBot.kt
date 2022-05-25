@@ -1,9 +1,11 @@
+package com.github.diceroller
+
+import com.github.diceroller.handler.Handler
 import com.github.kotlintelegrambot.Bot
 import com.github.kotlintelegrambot.bot
 import com.github.kotlintelegrambot.dispatch
 import com.github.kotlintelegrambot.dispatcher.Dispatcher
 import com.github.kotlintelegrambot.dispatcher.message
-import handler.Handler
 import org.slf4j.LoggerFactory
 
 class TelegramBot(token: String, handlers: List<Handler>) {

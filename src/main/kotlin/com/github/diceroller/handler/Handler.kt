@@ -1,4 +1,4 @@
-package handler
+package com.github.diceroller.handler
 
 import com.github.kotlintelegrambot.dispatcher.Dispatcher
 

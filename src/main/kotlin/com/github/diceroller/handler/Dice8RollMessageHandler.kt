@@ -1,4 +1,4 @@
-package handler
+package com.github.diceroller.handler
 
 class Dice8RollMessageHandler : DiceRollMessageHandler(8) {
 
