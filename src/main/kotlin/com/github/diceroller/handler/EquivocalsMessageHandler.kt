@@ -30,10 +30,10 @@ class EquivocalsMessageHandler(val cards: EquivocalsCardRepository) : MessageHan
         val card = if (cardType != null) cards.getRandom(cardType) else null
 
         if (card != null) {
-            val msg = "Экивоки\\!\n" +
-                "Тема\\: ${card.theme.title()}\n" +
+            val msg = "Экивоки!\n" +
+                "Тема: ${card.theme.title()}\n" +
                 "${card.type.emoji()}: ${card.description}\n\n" + card.task
-            bot.sendMessage(chatId, msg, ParseMode.MARKDOWN_V2)
+            bot.sendMessage(chatId, msg)
         } else {
             bot.sendMessage(chatId, "Карточки для \"${cardType?.dice}\" закончились")
         }
