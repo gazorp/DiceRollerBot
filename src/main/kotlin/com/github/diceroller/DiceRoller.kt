@@ -9,10 +9,11 @@ class DiceRoller {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            if (args[0] != "--token" || args.size < 2) {
-                throw Exception("Authentication token is not provided")
+            if (args.size < 2) {
+                throw Exception("Bot name and authentication token were not provided")
             }
 
+            val botName = args[0]
             val token = args[1]
 
             val equivocalsCardsRepo = InMemoryEquivocalsCardRepository()
@@ -26,7 +27,7 @@ class DiceRoller {
                 Dice12RollMessageHandler(),
                 Dice20RollMessageHandler(),
                 EquivocalsMessageHandler(equivocalsCardsRepo),
-                WrongMessageHandler(),
+                WrongMessageHandler(botName),
             )
 
             val bot = TelegramBot(token, handlers)
