@@ -1,14 +1,11 @@
 package com.github.diceroller.equivocals
 
-enum class CardTheme {
-    ChertiYellow,
-    ChertiPink,
-    Sensations,
+enum class CardTheme(val title: String) {
+    ChertiYellow("Чертаново!"),
+    ChertiPink("Чертаново!"),
+    Sensations("Мир Ощущений"),
+    HarryPotter("Гарри Поттер"),
+    LoveAndAround("Любовь и ее конечности"),
     ;
-
-    fun title(): String = when (this) {
-        ChertiYellow, ChertiPink -> "Чертаново!"
-        Sensations -> "Мир Ощущений"
-    }
 }
 data class Card(val theme: CardTheme, val type: TaskType, val description: String, val task: String)

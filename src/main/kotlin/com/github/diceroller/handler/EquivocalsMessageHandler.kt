@@ -31,7 +31,7 @@ class EquivocalsMessageHandler(val cards: EquivocalsCardRepository) : MessageHan
 
         if (card != null) {
             val msg = "Экивоки!\n" +
-                "Тема: ${card.theme.title()}\n" +
+                "Тема: ${card.theme.title}\n" +
                 "${card.type.emoji()}: ${card.description}\n\n" + card.task
             bot.sendMessage(chatId, msg)
         } else {
