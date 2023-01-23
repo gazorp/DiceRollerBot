@@ -1,26 +1,16 @@
 package com.github.diceroller.handler
 
-import com.github.kotlintelegrambot.dispatcher.Dispatcher
-import com.github.kotlintelegrambot.dispatcher.message
-import com.github.kotlintelegrambot.entities.ChatId
-import com.github.kotlintelegrambot.entities.MessageEntity.Type.BOT_COMMAND
-import com.github.kotlintelegrambot.entities.MessageEntity.Type.MENTION
+import com.github.kotlintelegrambot.Bot
 
-class WrongMessageHandler(private val botName: String) : Handler {
+class WrongMessageHandler(botName: String) : Handler {
+    private val botMention: String = "@$botName"
 
-    override fun handle(dispatcher: Dispatcher) = dispatcher.message {
-        val entities = update.message?.entities ?: emptyList()
-        val text = update.message?.text ?: ""
+    override fun suitable(command: Update): Boolean {
+        return command.mentions.any { it == botMention } || command.commands.any { it.contains(botMention) }
+    }
 
-        if (entities.any { it.type == MENTION } && text.startsWith("@$botName")) {
-            bot.sendSticker(ChatId.fromId(update.message?.chat?.id!!), funnyStickers.random(), replyMarkup = null)
-            update.consume()
-        }
-
-        if (entities.any { it.type == BOT_COMMAND } && text.contains("@$botName")) {
-            bot.sendSticker(ChatId.fromId(update.message?.chat?.id!!), funnyStickers.random(), replyMarkup = null)
-            update.consume()
-        }
+    override fun handle(bot: Bot, command: Update) {
+        bot.sendSticker(command.chatId, funnyStickers.random(), replyMarkup = null)
     }
 
     companion object {

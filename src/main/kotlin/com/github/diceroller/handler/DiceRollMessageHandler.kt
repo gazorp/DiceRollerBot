@@ -1,24 +1,30 @@
 package com.github.diceroller.handler
 
-import com.github.kotlintelegrambot.dispatcher.handlers.HandleMessage
-import com.github.kotlintelegrambot.entities.ChatId
-import com.github.kotlintelegrambot.entities.Message
-import com.github.kotlintelegrambot.extensions.filters.Filter
+import com.github.diceroller.dice.DiceRoller
+import com.github.diceroller.dice.DiceType
+import com.github.kotlintelegrambot.Bot
 
-abstract class DiceRollMessageHandler(private val diceType: Int) : MessageHandler() {
+class DiceRollHandler(private val diceRoller: DiceRoller) : Handler {
 
-    override fun filter(): Filter = object : Filter {
-        override fun Message.predicate(): Boolean {
-            val text = this.text ?: ""
+    override fun suitable(command: Update): Boolean = diceMap.contains(command.command)
 
-            return text == "/roll$diceType" || text == "/roll$diceType@PerfectRollBot"
+    override fun handle(bot: Bot, command: Update) {
+        val roll = diceRoller.roll(diceMap[command.command]!!)
+
+        roll.stickers.forEach { sticker ->
+            bot.sendSticker(command.chatId, sticker, replyMarkup = null)
         }
     }
 
-    override fun handleMessage(): HandleMessage = {
-        bot.sendSticker(ChatId.fromId(update.message?.chat?.id!!), diceStickerSet().random(), replyMarkup = null)
-        update.consume()
+    companion object {
+        private val diceMap: Map<Command, DiceType> = mapOf(
+            Command.DiceRoll4 to DiceType.Dice4,
+            Command.DiceRoll6 to DiceType.Dice6,
+            Command.DiceRoll8 to DiceType.Dice8,
+            Command.DiceRoll10 to DiceType.Dice10,
+            Command.DiceRoll12 to DiceType.Dice12,
+            Command.DiceRoll20 to DiceType.Dice20,
+            Command.DiceRoll100 to DiceType.Dice100,
+        )
     }
-
-    protected abstract fun diceStickerSet(): List<String>
 }

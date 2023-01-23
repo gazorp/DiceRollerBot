@@ -1,8 +1,10 @@
 package com.github.diceroller.handler
 
-import com.github.kotlintelegrambot.dispatcher.Dispatcher
+import com.github.kotlintelegrambot.Bot
 
 interface Handler {
 
-    fun handle(dispatcher: Dispatcher)
+    fun suitable(command: Update): Boolean
+
+    fun handle(bot: Bot, command: Update)
 }

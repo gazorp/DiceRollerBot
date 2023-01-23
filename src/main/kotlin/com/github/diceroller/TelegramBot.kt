@@ -4,28 +4,45 @@ import com.github.diceroller.handler.Handler
 import com.github.kotlintelegrambot.Bot
 import com.github.kotlintelegrambot.bot
 import com.github.kotlintelegrambot.dispatch
-import com.github.kotlintelegrambot.dispatcher.Dispatcher
-import com.github.kotlintelegrambot.dispatcher.message
+import com.github.kotlintelegrambot.entities.Update
 import org.slf4j.LoggerFactory
+import com.github.kotlintelegrambot.dispatcher.handlers.Handler as TelegramHandler
 
-class TelegramBot(token: String, handlers: List<Handler>) {
+class TelegramBot(token: String, botName: String, handlers: List<Handler>) {
 
+    private val messageParser = CommandParser(botName)
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private val bot: Bot = bot {
         this.token = token
 
-        dispatch {
-            listOf(loggingHandler()).plus(handlers).forEach { it.handle(this) }
+        val handler = object : TelegramHandler {
+            override fun checkUpdate(update: Update): Boolean = true
+
+            override fun handleUpdate(bot: Bot, update: Update) {
+                val command = messageParser.parse(update)
+
+                if (command == null) {
+                    logger.info("Could not parse ${update.message}")
+                    return
+                }
+
+                handlers.forEach {
+                    if (it.suitable(command)) {
+                        it.handle(bot, command)
+                        logger.info("Handled: $command by ${it.javaClass.simpleName}")
+                    }
+                }
+            }
         }
+
+        dispatch { this.addHandler(handler) }
+
         logger.info("Dice Rolling bot is dispatching with ${handlers.size} handlers")
     }
 
-    private fun loggingHandler(): Handler = object : Handler {
-        override fun handle(dispatcher: Dispatcher) = dispatcher.message {
-            logger.info("[${message.chat.username ?: message.chat.title}][${message.from?.firstName}]: ${message.text} $message")
-        }
+    fun run() {
+        bot.startPolling()
+        logger.info("Starts polling")
     }
-
-    fun run(): Unit = bot.startPolling().also { logger.info("Starts polling") }
 }

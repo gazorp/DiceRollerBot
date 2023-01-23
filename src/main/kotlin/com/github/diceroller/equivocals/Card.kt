@@ -8,4 +8,4 @@ enum class CardTheme(val title: String) {
     LoveAndAround("Любовь и ее конечности"),
     ;
 }
-data class Card(val theme: CardTheme, val type: TaskType, val description: String, val task: String)
+data class Card(val theme: CardTheme, val type: TaskType, val task: String)

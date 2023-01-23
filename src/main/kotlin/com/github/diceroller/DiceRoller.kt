@@ -1,5 +1,6 @@
 package com.github.diceroller
 
+import com.github.diceroller.dice.DiceRoller
 import com.github.diceroller.equivocals.InMemoryEquivocalsCardRepository
 import com.github.diceroller.handler.*
 
@@ -18,19 +19,13 @@ class DiceRoller {
 
             val equivocalsCardsRepo = InMemoryEquivocalsCardRepository()
 
-            val handlers = listOf(
-                Dice4RollMessageHandler(),
-                Dice6RollMessageHandler(),
-                Dice8RollMessageHandler(),
-                Dice100RollMessageHandler(),
-                Dice10RollMessageHandler(),
-                Dice12RollMessageHandler(),
-                Dice20RollMessageHandler(),
-                EquivocalsMessageHandler(equivocalsCardsRepo),
+            val handlers: List<Handler> = listOf(
+                DiceRollHandler(DiceRoller()),
+                EquivocalsCommandHandler(equivocalsCardsRepo),
                 WrongMessageHandler(botName),
             )
 
-            val bot = TelegramBot(token, handlers)
+            val bot = TelegramBot(token, botName, handlers)
 
             bot.run()
         }
