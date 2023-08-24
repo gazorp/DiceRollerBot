@@ -18,14 +18,4 @@ enum class TaskType(val dice: Dice, val description: String) {
     EQUIVOCALS_BACKWARDS_MEANING(Dice.Six, "Наоборот и значение"),
     EQUIVOCALS_CROCODILE(Dice.Six, "Покажи жестами"),
     EQUIVOCALS_WORDS(Dice.Six, "Объясни словами"),
-    ;
-}
-
-enum class Dice(val value: Int, val emoji: String) {
-    One(1, "1️⃣"),
-    Two(2, "2️⃣"),
-    Three(3, "3️⃣"),
-    Four(4, "4️⃣"),
-    Five(5, "5️⃣"),
-    Six(6, "6️⃣"),
 }

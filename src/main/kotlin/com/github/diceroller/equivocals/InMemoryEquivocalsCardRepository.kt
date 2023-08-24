@@ -1,45 +1,16 @@
 package com.github.diceroller.equivocals
 
-class InMemoryEquivocalsCardRepository : EquivocalsCardRepository {
+import com.github.diceroller.encryption.Encryptor
+
+class InMemoryEquivocalsCardRepository(private val encryptor: Encryptor) : EquivocalsCardRepository {
 
     override fun getRandom(dice: Dice): Card? {
         val card = cards.filter { it.type.dice == dice }.shuffled().firstOrNull()
 
-        return card?.copy(task = decypher(card.task).replaceFirstChar { it.uppercaseChar() })
-    }
-
-    private fun cypher(text: String): String {
-        return text.mapIndexed { i, char ->
-            val keyChar = CYPHER_KEY[i % (CYPHER_KEY.length - 1)]
-
-            when (val mappedChar = abcMap[char]) {
-                null -> char
-                else -> abc[(mappedChar + abcMap[keyChar]!!) % abcMap.size]
-            }
-        }.joinToString("")
-    }
-
-    private fun decypher(text: String): String {
-        return text.mapIndexed { i, char ->
-            val keyChar = CYPHER_KEY[i % (CYPHER_KEY.length - 1)]
-
-            when (val alpha = abcMap[char]) {
-                null -> char
-                else -> abc[(alpha - abcMap[keyChar]!! + abcMap.size) % abcMap.size]
-            }
-        }.joinToString("")
+        return card?.copy(task = encryptor.decrypt(card.task).replaceFirstChar { it.uppercaseChar() })
     }
 
     companion object {
-        private const val CYPHER_KEY = "экивоки"
-        private const val abc =
-            "абвгдежзийклмнопрстуфхцчшщъыьэюя" +
-            "АБВГДЕЁЗЖИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
-            "abcdefghijklmnopqrstuvwxyz" +
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-            "1234567890" +
-            "./ -:&,"
-        private val abcMap = abc.mapIndexed { i, c -> c to i }.toMap()
 
         private val cards: List<Card> = listOf(
             Card(CardTheme.ChertiYellow, TaskType.BACKWARDS, "ЮпхзЕфэжщрпкФфи"),

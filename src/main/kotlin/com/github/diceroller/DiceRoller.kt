@@ -1,6 +1,7 @@
 package com.github.diceroller
 
 import com.github.diceroller.dice.DiceRoller
+import com.github.diceroller.encryption.VigenereEncryptor
 import com.github.diceroller.equivocals.InMemoryEquivocalsCardRepository
 import com.github.diceroller.handler.*
 
@@ -10,14 +11,11 @@ class DiceRoller {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            if (args.size < 2) {
-                throw Exception("Bot name and authentication token were not provided")
-            }
+            val botName = args.getOrElse(0) { throw Exception("Bot name is required") }
+            val token = args.getOrElse(1) { throw Exception("Authentication token is required") }
+            val encryptionKey = args.getOrElse(2) { throw Exception("Encryption key is required") }
 
-            val botName = args[0]
-            val token = args[1]
-
-            val equivocalsCardsRepo = InMemoryEquivocalsCardRepository()
+            val equivocalsCardsRepo = InMemoryEquivocalsCardRepository(VigenereEncryptor(encryptionKey))
 
             val handlers: List<Handler> = listOf(
                 DiceRollHandler(DiceRoller()),
